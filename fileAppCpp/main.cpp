@@ -4,6 +4,23 @@
 #include <vector>
 #include <string>
 
+// how to get files from the directory where the main.cpp file is (aka sane people mode)
+    // Product > Scheme > Edit Scheme
+    // In the "Run" (in the left column) select "Options"
+    // Under "Working Directory"
+        // tick "Use custom Working Directory"
+        // pick the project directory where the main.cpp file is as your working directory
+
+// how to see the executable that results from a build
+    // Product > Show Build Folder in Finder
+    // Drag the build folder into your XCode File Explorer
+        // The executable is usually under Products/Debug/<here>
+
+// how to add command line arguments to your build and run
+    // Product > Scheme > Edit Scheme
+    // In the "Run" section select "Arguments"
+        // You can now add, remove and reorder arguments that are passed before running the executable
+
 class Ingredient {
 private:
     std::string name = "Unknown";
@@ -126,7 +143,8 @@ int main(int argc, const char * argv[]) {
     Ingredient i1("Tomato", 600);
     // std::cout << i1;
     std::vector<Ingredient> parsed;
-    parsed = ip.readText("ingredients.txt");
+    std::cout << "argument 1: " << argv[1] << "\n";
+    parsed = ip.readText(argv[1]);
     
     for (const auto& ing : parsed) {
         std::cout << ing << "\n";
@@ -137,7 +155,7 @@ int main(int argc, const char * argv[]) {
     
     MenuItemParser mip;
     std::vector<MenuItem> parsedVector;
-    parsedVector = mip.parseTextFile("menuItems.txt");
+    parsedVector = mip.parseTextFile(argv[2]);
     
     for (const auto& mi : parsedVector) {
         std::cout << mi << "\n";
