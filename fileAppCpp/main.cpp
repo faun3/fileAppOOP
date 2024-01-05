@@ -92,9 +92,6 @@ public:
     }
 };
 
-
-
-
 int main(int argc, const char * argv[]) {
     if (argc != 3) {
         std::cout << "No data files were specified. Using default data.\n";
@@ -127,8 +124,21 @@ int main(int argc, const char * argv[]) {
     
     std::cout << "First file: " << CheckExtension::checkExtension(argv[1]) << "\n";
     std::cout << "Second file: " << CheckExtension::checkExtension(argv[2]) << "\n";
+    
+    std::string testing = "hello";
+    bool reading = true;
+    if (reading) {
+        std::ifstream file("stringWrite.bin", std::ios::binary);
+        std::string temp = deserializeString(file);
+        std::cout << "Deserialized: " << temp << std::endl;
+        file.close();
+    }
+    else {
+        std::ofstream file("stringWrite.bin", std::ios::binary);
+        serializeString(file, testing);
+        std::cout << "Serialized into binary file: " << testing << std::endl;
+        file.close();
+    }
 
-    
-    
     return 0;
 }

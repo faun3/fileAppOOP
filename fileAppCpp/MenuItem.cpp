@@ -9,7 +9,7 @@ MenuItem::MenuItem(std::string name, double price, std::vector<class Ingredient>
     this->price = price;
     this->ingredients = ingredients;
 }
-std::ostream& operator<<(std::ostream& out, const MenuItem& m) {
+std::ostream& operator<<(std::ostream& out, const class MenuItem& m) {
     out << "---Menu Item---\n";
     out << "Name: " << m.name << "\n";
     out << "Price: " << m.price << "\n";
