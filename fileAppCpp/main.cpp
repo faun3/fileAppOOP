@@ -92,6 +92,7 @@ public:
     }
 };
 
+
 int main(int argc, const char * argv[]) {
     if (argc != 3) {
         std::cout << "No data files were specified. Using default data.\n";
@@ -139,6 +140,23 @@ int main(int argc, const char * argv[]) {
         std::cout << "Serialized into binary file: " << testing << std::endl;
         file.close();
     }
-
+    
+    // please test this !!!!!
+    class Ingredient i1("Tomato", 100);
+    class Ingredient empty;
+    class Ingredient temp;
+    if (reading) {
+        std::ifstream ingFile("ing.bin", std::ios::binary);
+        temp.deserialize(ingFile);
+        std::cout << "Deserialized: \n" << temp << std::endl;
+    }
+    else {
+        std::ofstream ingFile("ing.bin", std::ios::binary);
+        empty.serialize(ingFile);
+        std::cout << "Serialized: \n" << empty;
+    }
+    
+    std::cout << temp << std::endl;
+    std::cout << temp.getName() << " " << temp.getQuantity() << std::endl;
     return 0;
 }
