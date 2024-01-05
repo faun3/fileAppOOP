@@ -4,6 +4,9 @@
 #include <vector>
 #include <string>
 
+#include "globals.h"
+#include "CheckExtension.h"
+
 // how to get files from the directory where the main.cpp file is (aka sane people mode)
     // Product > Scheme > Edit Scheme
     // In the "Run" (in the left column) select "Options"
@@ -138,20 +141,23 @@ public:
     }
 };
 
+
+
+
 int main(int argc, const char * argv[]) {
-    IngredientParser ip;
-    Ingredient i1("Tomato", 600);
-    // std::cout << i1;
-    std::vector<Ingredient> parsed;
-    std::cout << "argument 1: " << argv[1] << "\n";
-    parsed = ip.readText(argv[1]);
+    if (argc != 3) {
+        std::cout << "No data files were specified. Using default data.\n";
+    }
+    else {
+        
+    }
     
+    IngredientParser ip;
+    std::vector<Ingredient> parsed;
+    parsed = ip.readText(argv[1]);
     for (const auto& ing : parsed) {
         std::cout << ing << "\n";
     }
-    
-    MenuItem mi1("Pizza", 65.98, parsed);
-    //std::cout << mi1 << std::endl;
     
     MenuItemParser mip;
     std::vector<MenuItem> parsedVector;
@@ -160,6 +166,18 @@ int main(int argc, const char * argv[]) {
     for (const auto& mi : parsedVector) {
         std::cout << mi << "\n";
     }
+    
+    std::cout << "\n\n\n";
+    
+    for (const auto& exts : allowedExtensions) {
+        std::cout << exts << " ";
+    }
+    std::cout << "\n";
+    
+    std::cout << "First file: " << CheckExtension::checkExtension(argv[1]) << "\n";
+    std::cout << "Second file: " << CheckExtension::checkExtension(argv[2]) << "\n";
+
+    
     
     return 0;
 }
