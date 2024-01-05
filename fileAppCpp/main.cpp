@@ -6,6 +6,8 @@
 
 #include "globals.h"
 #include "CheckExtension.h"
+#include "ISerializable.h"
+#include "Ingredient.h"
 
 // how to get files from the directory where the main.cpp file is (aka sane people mode)
     // Product > Scheme > Edit Scheme
@@ -24,30 +26,30 @@
     // In the "Run" section select "Arguments"
         // You can now add, remove and reorder arguments that are passed before running the executable
 
-class Ingredient {
-private:
-    std::string name = "Unknown";
-    int quantity = 0;
-public:
-    Ingredient(std::string name, int quantity) {
-        this->name = name;
-        this->quantity = quantity;
-    }
-    friend std::ostream& operator<<(std::ostream& out, const Ingredient& i) {
-        out << "---Ingredient---\n";
-        out << "Name: " << i.name << "\n";
-        out << "Quantitiy: " << i.quantity << "\n";
-        return out;
-    }
-};
+//class Ingredient {
+//private:
+//    std::string name = "Unknown";
+//    int quantity = 0;
+//public:
+//    Ingredient(std::string name, int quantity) {
+//        this->name = name;
+//        this->quantity = quantity;
+//    }
+//    friend std::ostream& operator<<(std::ostream& out, const Ingredient& i) {
+//        out << "---Ingredient---\n";
+//        out << "Name: " << i.name << "\n";
+//        out << "Quantitiy: " << i.quantity << "\n";
+//        return out;
+//    }
+//};
 
 class MenuItem {
 private:
     std::string name = "Unknown";
     double price = 0;
-    std::vector<Ingredient> ingredients;
+    std::vector<class Ingredient> ingredients;
 public:
-    MenuItem(std::string name, double price, std::vector<Ingredient> ingredients) {
+    MenuItem(std::string name, double price, std::vector<class Ingredient> ingredients) {
         this->name = name;
         this->price = price;
         this->ingredients = ingredients;
@@ -78,14 +80,14 @@ public:
 
 class ITextReadableIngredient {
 public:
-    virtual std::vector<Ingredient> readText(const std::string& filename) = 0;
+    virtual std::vector<class Ingredient> readText(const std::string& filename) = 0;
     virtual ~ITextReadableIngredient() {}
 };
 
 class IngredientParser : ITextReadableIngredient {
 public:
-    std::vector<Ingredient> readText(const std::string& filename) override {
-        std::vector<Ingredient> parsedIngredientList;
+    std::vector<class Ingredient> readText(const std::string& filename) override {
+        std::vector<class Ingredient> parsedIngredientList;
         std::ifstream file(filename);
         
         if (!file.is_open()) {
@@ -96,7 +98,7 @@ public:
         int parsedQuantity;
         
         while (file >> parsedName >> parsedQuantity) {
-            Ingredient toPush(parsedName, parsedQuantity);
+            class Ingredient toPush(parsedName, parsedQuantity);
             parsedIngredientList.push_back(toPush);
         }
         
@@ -107,14 +109,14 @@ public:
 
 class ITextReadableMenuItem {
 public:
-    virtual std::vector<MenuItem> parseTextFile(const std::string& filename) = 0;
+    virtual std::vector<class MenuItem> parseTextFile(const std::string& filename) = 0;
     virtual ~ITextReadableMenuItem() {}
 };
 
 class MenuItemParser : ITextReadableMenuItem {
 public:
-    std::vector<MenuItem> parseTextFile(const std::string& filename) override {
-        std::vector<MenuItem> result;
+    std::vector<class MenuItem> parseTextFile(const std::string& filename) override {
+        std::vector<class MenuItem> result;
         
         std::ifstream file(filename);
         if (!file.is_open()) return result;
@@ -122,17 +124,17 @@ public:
         std::string menuItemName;
         double menuItemPrice;
         int ingredientListLength;
-        std::vector<Ingredient> ingredients;
+        std::vector<class Ingredient> ingredients;
         std::string ingredientName;
         int ingredientQuantity;
         
         while (file >> menuItemName >> menuItemPrice >> ingredientListLength) {
             for (int step = 0; step < ingredientListLength; step++) {
                 file >> ingredientName >> ingredientQuantity;
-                Ingredient toPush(ingredientName, ingredientQuantity);
+                class Ingredient toPush(ingredientName, ingredientQuantity);
                 ingredients.push_back(toPush);
             }
-            MenuItem parsedMenuItem(menuItemName, menuItemPrice, ingredients);
+            class MenuItem parsedMenuItem(menuItemName, menuItemPrice, ingredients);
             result.push_back(parsedMenuItem);
             ingredients.clear();
         }
@@ -153,14 +155,14 @@ int main(int argc, const char * argv[]) {
     }
     
     IngredientParser ip;
-    std::vector<Ingredient> parsed;
+    std::vector<class Ingredient> parsed;
     parsed = ip.readText(argv[1]);
     for (const auto& ing : parsed) {
         std::cout << ing << "\n";
     }
     
     MenuItemParser mip;
-    std::vector<MenuItem> parsedVector;
+    std::vector<class MenuItem> parsedVector;
     parsedVector = mip.parseTextFile(argv[2]);
     
     for (const auto& mi : parsedVector) {
