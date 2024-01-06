@@ -31,11 +31,11 @@ int Ingredient::getQuantity() const {
 }
 
 void Ingredient::setName(std::string name) {
-    this->name = name;
+    if (name != "") this->name = name;
 }
 
 void Ingredient::setQuantity(int quantity) {
-    this->quantity = quantity;
+    if (quantity > 0) this->quantity = quantity;
 }
 
 void Ingredient::serialize(std::ofstream& file) const {

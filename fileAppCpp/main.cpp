@@ -127,7 +127,9 @@ int main(int argc, const char * argv[]) {
     std::cout << "Second file: " << CheckExtension::checkExtension(argv[2]) << "\n";
     
     std::string testing = "hello";
+    
     bool reading = true;
+    
     if (reading) {
         std::ifstream file("stringWrite.bin", std::ios::binary);
         std::string temp = deserializeString(file);
@@ -142,7 +144,7 @@ int main(int argc, const char * argv[]) {
     }
     
     // please test this !!!!!
-    class Ingredient i1("Tomato", 100);
+    class Ingredient i1("Alex", 666);
     class Ingredient empty;
     class Ingredient temp;
     if (reading) {
@@ -152,11 +154,11 @@ int main(int argc, const char * argv[]) {
     }
     else {
         std::ofstream ingFile("ing.bin", std::ios::binary);
-        empty.serialize(ingFile);
+        i1.serialize(ingFile);
         std::cout << "Serialized: \n" << empty;
     }
     
-    std::cout << temp << std::endl;
-    std::cout << temp.getName() << " " << temp.getQuantity() << std::endl;
+    // std::cout << temp << std::endl;
+    // std::cout << temp.getName() << " " << temp.getQuantity() << std::endl;
     return 0;
 }
