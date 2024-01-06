@@ -112,53 +112,23 @@ int main(int argc, const char * argv[]) {
     std::vector<class MenuItem> parsedVector;
     parsedVector = mip.parseTextFile(argv[2]);
     
-    for (const auto& mi : parsedVector) {
-        std::cout << mi << "\n";
-    }
-    
-    std::cout << "\n\n\n";
-    
-    for (const auto& exts : allowedExtensions) {
-        std::cout << exts << " ";
-    }
-    std::cout << "\n";
-    
-    std::cout << "First file: " << CheckExtension::checkExtension(argv[1]) << "\n";
-    std::cout << "Second file: " << CheckExtension::checkExtension(argv[2]) << "\n";
-    
-    std::string testing = "hello";
-    
+    class MenuItem pizza = parsedVector.at(0);
+    class MenuItem empty;
+        
     bool reading = true;
     
     if (reading) {
-        std::ifstream file("stringWrite.bin", std::ios::binary);
-        std::string temp = deserializeString(file);
-        std::cout << "Deserialized: " << temp << std::endl;
-        file.close();
+        std::ifstream file("menuItem.bin", std::ios::binary);
+        if (!file.is_open()) std::cout << "File didn't open.\n";
+        empty.deserialize(file);
+        std::cout << "Deserialized: \n" << empty;
     }
     else {
-        std::ofstream file("stringWrite.bin", std::ios::binary);
-        serializeString(file, testing);
-        std::cout << "Serialized into binary file: " << testing << std::endl;
-        file.close();
+        std::ofstream file("menuItem.bin", std::ios::binary);
+        if (!file.is_open()) std::cout << "File didn't open.\n";
+        pizza.serialize(file);
+        std::cout << "Serialized: \n" << pizza;
     }
     
-    // please test this !!!!!
-    class Ingredient i1("Alex", 666);
-    class Ingredient empty;
-    class Ingredient temp;
-    if (reading) {
-        std::ifstream ingFile("ing.bin", std::ios::binary);
-        temp.deserialize(ingFile);
-        std::cout << "Deserialized: \n" << temp << std::endl;
-    }
-    else {
-        std::ofstream ingFile("ing.bin", std::ios::binary);
-        i1.serialize(ingFile);
-        std::cout << "Serialized: \n" << empty;
-    }
-    
-    // std::cout << temp << std::endl;
-    // std::cout << temp.getName() << " " << temp.getQuantity() << std::endl;
     return 0;
 }

@@ -3,8 +3,9 @@
 #include <vector>
 #include <fstream>
 #include "globals.h"
+#include "ISerializable.h"
 
-class MenuItem {
+class MenuItem : ISerializable {
 private:
     static SerializableTypes serializedSignature;
     std::string name = "Unknown";
@@ -14,11 +15,11 @@ public:
     MenuItem();
     MenuItem(std::string name, double price, std::vector<class Ingredient> ingredients);
     friend std::ostream& operator<<(std::ostream& out, const MenuItem& m);
-    void serialize(std::ostream& file) const;
-    void deserialize(std::istream& file);
-    std::string getName();
-    double getPrice();
-    std::vector<class Ingredient> getIngredients();
+    void serialize(std::ofstream& file) const;
+    void deserialize(std::ifstream& file);
+    std::string getName() const;
+    double getPrice() const;
+    std::vector<class Ingredient> getIngredients() const;
     void setName(std::string newName);
     void setPrice(double newPrice);
     void setIngredients(std::vector<class Ingredient> newIngredients);

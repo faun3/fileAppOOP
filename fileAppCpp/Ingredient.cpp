@@ -38,6 +38,8 @@ void Ingredient::setQuantity(int quantity) {
     if (quantity > 0) this->quantity = quantity;
 }
 
+// this method cannot call file.close() because it will prevent proper serialization
+//  when called in a loop (such as in MenuItem::serialize)
 void Ingredient::serialize(std::ofstream& file) const {
     if (!file.is_open()) return;
     
@@ -49,10 +51,9 @@ void Ingredient::serialize(std::ofstream& file) const {
     int tempQty = this->getQuantity();
     
     file.write(reinterpret_cast<char*>(&tempQty), sizeof(tempQty));
-    
-    file.close();
 }
 
+// this method cannot call file.close() for the same reasons that serialize cannot call file.close()
 void Ingredient::deserialize(std::ifstream& file) {
     if (!file.is_open()) {
         return;
@@ -62,16 +63,18 @@ void Ingredient::deserialize(std::ifstream& file) {
     // this needs to be refactored into its own thing
     // read in an enum member, determine its value then call that class' deserialize method
     SerializableTypes readSignature;
+    std::string tempName;
+    int tempQuantity;
+
     file.read(reinterpret_cast<char*>(&readSignature), sizeof(SerializableTypes));
     if (readSignature != Ingredient::serializedSignature) return;
     
     // idk what to do here, mutate this with the read info?
     // probably the only thing you can do
-    this->setName(deserializeString(file));
+    tempName = deserializeString(file);
+    std::cout << "From file: " << tempName << "\n";
+    this->setName(tempName);
     
-    int newQty;
-    file.read(reinterpret_cast<char*>(&newQty), sizeof(newQty));
-    this->setQuantity(newQty);
-    
-    file.close();
+    file.read(reinterpret_cast<char*>(&tempQuantity), sizeof(tempQuantity));
+    this->setQuantity(tempQuantity);
 }
