@@ -3,12 +3,14 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "globals.h"
 #include "CheckExtension.h"
 #include "ISerializable.h"
 #include "Ingredient.h"
 #include "MenuItem.h"
+#include "Restaurant.h"
 
 // how to get files from the directory where the main.cpp file is (aka sane people mode)
     // Product > Scheme > Edit Scheme
@@ -122,13 +124,37 @@ int main(int argc, const char * argv[]) {
         if (!file.is_open()) std::cout << "File didn't open.\n";
         empty.deserialize(file);
         std::cout << "Deserialized: \n" << empty;
+        file.close();
     }
     else {
         std::ofstream file("menuItem.bin", std::ios::binary);
         if (!file.is_open()) std::cout << "File didn't open.\n";
         pizza.serialize(file);
         std::cout << "Serialized: \n" << pizza;
+        file.close();
     }
     
+    // this completely solves the quoted string problem for free
+    // just need to add a parser class to make it work
+//    std::string userInput;
+//    std::vector<std::string> tokens;
+//    std::cout << "Input your command: ";
+//    std::getline(std::cin, userInput);
+//    std::istringstream iss(userInput);
+//    std::string token;
+//    while (iss >> std::quoted(token)) {
+//        tokens.push_back(token);
+//    }
+    std::vector<std::pair<class MenuItem, int>> artificialOrder;
+    // adds 2 pizzas
+    artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(0), 2));
+    // and 1 juice
+    artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(1), 1));
+    
+    Restaurant riri(parsed, parsedVector, artificialOrder);
+    
+    riri.printMenu();
+    riri.printOrder();
+    riri.printStock();
     return 0;
 }

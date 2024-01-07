@@ -99,10 +99,11 @@ void MenuItem::deserialize(std::ifstream& file) {
     
     this->setName(tempName);
     this->setPrice(tempPrice);
-    
-    std::cout << "Before set: " << *this;
-    
     this->setIngredients(tempIngredients);
-    
-    std::cout << "After set: " << *this;
 }
+
+bool MenuItem::operator<(const class MenuItem& rhs) const {
+    if (this->getName() < rhs.getName()) return true;
+    return false;
+}
+

@@ -8,10 +8,7 @@ const std::vector<std::string> allowedExtensions{"txt", "csv", "bin"};
 
 enum SerializableTypes {
     Ingredient,
-    MenuItem,
-    Stock,
-    Menu,
-    Order
+    MenuItem
 };
 
 // we need inline to avoid a linker error

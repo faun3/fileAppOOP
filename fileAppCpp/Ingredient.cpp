@@ -63,18 +63,16 @@ void Ingredient::deserialize(std::ifstream& file) {
     // this needs to be refactored into its own thing
     // read in an enum member, determine its value then call that class' deserialize method
     SerializableTypes readSignature;
-    std::string tempName;
-    int tempQuantity;
-
     file.read(reinterpret_cast<char*>(&readSignature), sizeof(SerializableTypes));
     if (readSignature != Ingredient::serializedSignature) return;
     
     // idk what to do here, mutate this with the read info?
     // probably the only thing you can do
+    std::string tempName;
     tempName = deserializeString(file);
-    std::cout << "From file: " << tempName << "\n";
     this->setName(tempName);
     
+    int tempQuantity;
     file.read(reinterpret_cast<char*>(&tempQuantity), sizeof(tempQuantity));
     this->setQuantity(tempQuantity);
 }
