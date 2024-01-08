@@ -31,7 +31,7 @@
 
 class IngredientParser {
 public:
-    std::vector<class Ingredient> readText(const std::string& filename) {
+    static std::vector<class Ingredient> readText(const std::string& filename) {
         std::vector<class Ingredient> parsedIngredientList;
         std::ifstream file(filename);
         
@@ -54,7 +54,7 @@ public:
 
 class MenuItemParser {
 public:
-    std::vector<class MenuItem> parseTextFile(const std::string& filename) {
+    static std::vector<class MenuItem> parseTextFile(const std::string& filename) {
         std::vector<class MenuItem> result;
         
         std::ifstream file(filename);
@@ -91,19 +91,17 @@ int main(int argc, const char * argv[]) {
         
     }
     
-    IngredientParser ip;
     std::vector<class Ingredient> parsed;
-    parsed = ip.readText(argv[1]);
+    parsed = IngredientParser::readText(argv[1]);
     for (const auto& ing : parsed) {
         std::cout << ing << "\n";
     }
     
-    MenuItemParser mip;
     std::vector<class MenuItem> parsedVector;
-    parsedVector = mip.parseTextFile(argv[2]);
+    parsedVector = MenuItemParser::parseTextFile(argv[2]);
     
     class MenuItem pizza = parsedVector.at(0);
-    // std::cout << "Should be pizza: \n" << pizza;
+    std::cout << "Should be pizza: \n" << pizza;
     class MenuItem empty;
         
     bool reading = true;
