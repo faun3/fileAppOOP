@@ -6,6 +6,8 @@
 
 const std::vector<std::string> allowedExtensions{"txt", "csv", "bin"};
 
+const char delimiter = ',';
+
 enum SerializableTypes {
     Ingredient,
     MenuItem

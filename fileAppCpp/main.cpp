@@ -30,6 +30,19 @@
         // You can now add, remove and reorder arguments that are passed before running the executable
 
 class IngredientParser {
+private:
+    static std::vector<std::string> splitter(const std::string& line, const char delimiter) {
+        std::vector<std::string> split;
+        
+        std::istringstream iss(line);
+        std::string token;
+
+        while (std::getline(iss, token, delimiter)) {
+            split.push_back(token);
+        }
+        
+        return split;
+    }
 public:
     static std::vector<class Ingredient> readText(const std::string& filename) {
         std::vector<class Ingredient> parsedIngredientList;
@@ -45,6 +58,45 @@ public:
         while (file >> parsedName >> parsedQuantity) {
             class Ingredient toPush(parsedName, parsedQuantity);
             parsedIngredientList.push_back(toPush);
+        }
+        
+        file.close();
+        return parsedIngredientList;
+    }
+    
+    static std::vector<class Ingredient> parseCsv(const std::string& filename) {
+        std::vector<class Ingredient> parsedIngredientList;
+        std::ifstream file(filename);
+        
+        if (!file.is_open()) {
+            std::cout << "File mishap" << std::endl;
+            return parsedIngredientList;
+        }
+        
+        std::string line;
+        
+        while (std::getline(file, line)) {
+            
+            std::vector<std::string> exploded = IngredientParser::splitter(line, delimiter);
+            // no error handling here
+            std::string unquoted = exploded.at(0);
+            if (!unquoted.empty() && unquoted.front() == '\"') {
+                unquoted.erase(unquoted.begin());
+            }
+            
+            if (!unquoted.empty() && unquoted.back() == '\"') {
+                unquoted.pop_back();
+            }
+            
+            int qty;
+            try {
+                qty = stoi(exploded.at(1));
+            }
+            catch (std::invalid_argument e) {
+                qty = 0;
+            }
+            class Ingredient temp(unquoted, qty);
+            parsedIngredientList.push_back(temp);
         }
         
         file.close();
@@ -143,5 +195,14 @@ int main(int argc, const char * argv[]) {
     riri.printMenu();
     riri.printOrder();
     riri.printStock();
+    
+    std::string filename = argv[3];
+    if (CheckExtension::checkExtension(filename)) {
+        std::vector<class Ingredient> parsed = IngredientParser::parseCsv(filename);
+        for (const auto& i : parsed) {
+            std::cout << i;
+        }
+    }
+    
     return 0;
 }
