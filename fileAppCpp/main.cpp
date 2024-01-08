@@ -136,50 +136,34 @@ public:
 int main(int argc, const char * argv[]) {
     if (argc == 1) {
         std::cout << "No data files were specified. Using defaults.\n";
-        std::ifstream ingredientsFile("ing.bin", std::ios::binary);
-        std::ifstream menuItemFile("menuItem.bin", std::ios::binary);
+        // std::ifstream ingredientsFile("ing.bin", std::ios::binary);
+        // std::ifstream menuItemFile("menuItem.bin", std::ios::binary);
         
         std::vector<class Ingredient> stock;
     }
     else {
+        if (argc == 3) {
+            
+        }
         
+        else {
+            std::cout << "Invalid number of arguments specified.\n Please use 2 .txt or .bin files. The first file should contain information about the restaurant's stock, and the second file should contain information about the restaurant's menu.\nThe file containing ingredient data can also be a .csv.\nUsing default data.";
+        }
     }
     
-    std::vector<class Ingredient> parsed;
-    parsed = IngredientParser::readText(argv[1]);
+    // std::vector<class Ingredient> parsed;
+    // parsed = IngredientParser::readText(argv[1]);
     
-    std::vector<class MenuItem> parsedVector;
-    parsedVector = MenuItemParser::parseTextFile(argv[2]);
-    // this completely solves the quoted string problem for free
-    // just need to add a parser class to make it work
-//    std::string userInput;
-//    std::vector<std::string> tokens;
-//    std::cout << "Input your command: ";
-//    std::getline(std::cin, userInput);
-//    std::istringstream iss(userInput);
-//    std::string token;
-//    while (iss >> std::quoted(token)) {
-//        tokens.push_back(token);
-//    }
+    // std::vector<class MenuItem> parsedVector;
+    // parsedVector = MenuItemParser::parseTextFile(argv[2]);
+    
     std::vector<std::pair<class MenuItem, int>> artificialOrder;
     // adds 2 pizzas
-    artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(0), 2));
+    // artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(0), 2));
     // and 1 juice
-    artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(1), 1));
+    // artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(1), 1));
     
-    Restaurant riri(parsed, parsedVector, artificialOrder);
-    
-    riri.printMenu();
-    riri.printOrder();
-    riri.printStock();
-    
-    std::string filename = argv[3];
-    if (CheckExtension::checkExtension(filename)) {
-        std::vector<class Ingredient> parsed = IngredientParser::parseCsv(filename);
-        // for (const auto& i : parsed) {
-            // std::cout << i;
-        // }
-    }
+    Restaurant riri;
     
     enum mode {
         read,
@@ -201,6 +185,5 @@ int main(int argc, const char * argv[]) {
     riri.printMenu();
     riri.printOrder();
     riri.printStock();
-    
     return 0;
 }
