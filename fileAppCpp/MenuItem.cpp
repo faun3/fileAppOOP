@@ -93,7 +93,6 @@ void MenuItem::deserialize(std::ifstream& file) {
     for (size_t i = 0; i < tempIngredientsLength; i++) {
         class Ingredient temp;
         temp.deserialize(file);
-        std::cout << temp;
         tempIngredients.push_back(temp);
     }
     

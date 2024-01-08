@@ -29,15 +29,9 @@
     // In the "Run" section select "Arguments"
         // You can now add, remove and reorder arguments that are passed before running the executable
 
-class ITextReadableIngredient {
+class IngredientParser {
 public:
-    virtual std::vector<class Ingredient> readText(const std::string& filename) = 0;
-    virtual ~ITextReadableIngredient() {}
-};
-
-class IngredientParser : ITextReadableIngredient {
-public:
-    std::vector<class Ingredient> readText(const std::string& filename) override {
+    std::vector<class Ingredient> readText(const std::string& filename) {
         std::vector<class Ingredient> parsedIngredientList;
         std::ifstream file(filename);
         
@@ -58,15 +52,9 @@ public:
     }
 };
 
-class ITextReadableMenuItem {
+class MenuItemParser {
 public:
-    virtual std::vector<class MenuItem> parseTextFile(const std::string& filename) = 0;
-    virtual ~ITextReadableMenuItem() {}
-};
-
-class MenuItemParser : ITextReadableMenuItem {
-public:
-    std::vector<class MenuItem> parseTextFile(const std::string& filename) override {
+    std::vector<class MenuItem> parseTextFile(const std::string& filename) {
         std::vector<class MenuItem> result;
         
         std::ifstream file(filename);
@@ -115,6 +103,7 @@ int main(int argc, const char * argv[]) {
     parsedVector = mip.parseTextFile(argv[2]);
     
     class MenuItem pizza = parsedVector.at(0);
+    // std::cout << "Should be pizza: \n" << pizza;
     class MenuItem empty;
         
     bool reading = true;
