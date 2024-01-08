@@ -60,7 +60,6 @@ public:
             parsedIngredientList.push_back(toPush);
         }
         
-        file.close();
         return parsedIngredientList;
     }
     
@@ -98,8 +97,7 @@ public:
             class Ingredient temp(unquoted, qty);
             parsedIngredientList.push_back(temp);
         }
-        
-        file.close();
+    
         return parsedIngredientList;
     }
 };
@@ -136,8 +134,12 @@ public:
 
 
 int main(int argc, const char * argv[]) {
-    if (argc != 3) {
-        std::cout << "No data files were specified. Using default data.\n";
+    if (argc == 1) {
+        std::cout << "No data files were specified. Using defaults.\n";
+        std::ifstream ingredientsFile("ing.bin", std::ios::binary);
+        std::ifstream menuItemFile("menuItem.bin", std::ios::binary);
+        
+        std::vector<class Ingredient> stock;
     }
     else {
         
@@ -145,34 +147,9 @@ int main(int argc, const char * argv[]) {
     
     std::vector<class Ingredient> parsed;
     parsed = IngredientParser::readText(argv[1]);
-    for (const auto& ing : parsed) {
-        std::cout << ing << "\n";
-    }
     
     std::vector<class MenuItem> parsedVector;
     parsedVector = MenuItemParser::parseTextFile(argv[2]);
-    
-    class MenuItem pizza = parsedVector.at(0);
-    std::cout << "Should be pizza: \n" << pizza;
-    class MenuItem empty;
-        
-    bool reading = true;
-    
-    if (reading) {
-        std::ifstream file("menuItem.bin", std::ios::binary);
-        if (!file.is_open()) std::cout << "File didn't open.\n";
-        empty.deserialize(file);
-        std::cout << "Deserialized: \n" << empty;
-        file.close();
-    }
-    else {
-        std::ofstream file("menuItem.bin", std::ios::binary);
-        if (!file.is_open()) std::cout << "File didn't open.\n";
-        pizza.serialize(file);
-        std::cout << "Serialized: \n" << pizza;
-        file.close();
-    }
-    
     // this completely solves the quoted string problem for free
     // just need to add a parser class to make it work
 //    std::string userInput;
@@ -199,10 +176,31 @@ int main(int argc, const char * argv[]) {
     std::string filename = argv[3];
     if (CheckExtension::checkExtension(filename)) {
         std::vector<class Ingredient> parsed = IngredientParser::parseCsv(filename);
-        for (const auto& i : parsed) {
-            std::cout << i;
-        }
+        // for (const auto& i : parsed) {
+            // std::cout << i;
+        // }
     }
+    
+    enum mode {
+        read,
+        write
+    };
+    
+    mode mode = mode::read;
+    if (mode == mode::read) {
+        std::ifstream file("restaurant.bin", std::ios::binary);
+        riri.deserialize(file);
+        file.close();
+    }
+    else {
+        std::ofstream file("restaurant.bin", std::ios::binary);
+        riri.serialize(file);
+        file.close();
+    }
+    
+    riri.printMenu();
+    riri.printOrder();
+    riri.printStock();
     
     return 0;
 }

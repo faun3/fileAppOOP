@@ -10,3 +10,11 @@ Soda
 2
 Water 200
 Juice 50
+Hawaii
+18.99
+5
+Dough 300
+Sauce 150
+Cheese 200
+Pineapple 50
+Ham 100
