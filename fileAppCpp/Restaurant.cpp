@@ -1,5 +1,7 @@
 #include "Restaurant.h"
 #include "ISerializable.h"
+#include <set>
+#include <algorithm>
 
 Restaurant::Restaurant() {
     std::set<class MenuItem> emptyMenu;
@@ -98,14 +100,41 @@ void Restaurant::printMenu() const {
 
 void Restaurant::printOrder() const {
     std::cout << "\n---Order---\n";
-    for (const auto& oi : this->order) {
-        std::cout << oi.second.first.getName() << " x " << oi.second.second << "\n";
+    if (order.size() > 0) {
+        for (const auto& oi : this->order) {
+            std::cout << oi.second.first.getName() << " x " << oi.second.second << "\n";
+        }
     }
+    else std::cout << "Nothing yet.\n";
 }
 
 void Restaurant::printStock() const {
     std::cout << "\n---Stock---\n";
     for (const auto& i : this->stock) {
         std::cout << i.getName() << " " << i.getQuantity() << "\n";
+    }
+}
+
+void Restaurant::clearOrder() {
+    this->order.clear();
+}
+
+class MenuItem Restaurant::findInMenu(std::string menuItemName) {
+    class MenuItem found;
+    for (const auto& i : this->menu) {
+        if (i.getName() == menuItemName) {
+            found = i;
+            return found;
+        }
+    }
+    return found;
+}
+
+void Restaurant::addToOrder(class MenuItem item, int quantity) {
+    if (this->order.find(item.getName()) == this->order.end()) {
+        this->order[item.getName()] = std::pair<class MenuItem, int>(item, quantity);
+    }
+    else {
+        this->order[item.getName()].second += quantity;
     }
 }

@@ -158,17 +158,7 @@ int main(int argc, const char * argv[]) {
         }
     }
     
-    // std::vector<class Ingredient> parsed;
-    // parsed = IngredientParser::readText(argv[1]);
-    
-    // std::vector<class MenuItem> parsedVector;
-    // parsedVector = MenuItemParser::parseTextFile(argv[2]);
-    
     std::vector<std::pair<class MenuItem, int>> artificialOrder;
-    // adds 2 pizzas
-    // artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(0), 2));
-    // and 1 juice
-    // artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(1), 1));
         
     enum mode {
         read,
@@ -197,19 +187,90 @@ int main(int argc, const char * argv[]) {
         std::string line;
         std::getline(std::cin, line);
         tokenizedLine = Parser::splitCommand(line);
-        if (tokenizedLine[0] == "leave") {
+        if (tokenizedLine.empty()) {
+            std::cout << "Invalid command!\nUse \"help\" to print the help message.\n";
+        }
+        else if (tokenizedLine[0] == "leave") {
+            std::cout << "\nbye\n";
             running = false;
         }
         else if (tokenizedLine[0] == "order") {
-            if (tokenizedLine[1] == "show") {
+            if (tokenizedLine.size() == 1) {
+                std::cout << "Missing arguments.\n";
+            }
+            else if (tokenizedLine[1] == "add") {
+                if (tokenizedLine.size() != 4) {
+                    std::cout << "Incorrect usage.\n";
+                }
+                else {
+                    std::string menuItemName = tokenizedLine[2];
+                    int quantity;
+                    try {
+                        quantity = stoi(tokenizedLine[3]);
+                        if (quantity <= 0) {
+                            std::cout << "Quantity cannot be negative or 0.\n";
+                        }
+                        else {
+                            class MenuItem it = riri.findInMenu(menuItemName);
+                            if (it.getName() == "Unknown") {
+                                std::cout << "That item is not in the menu!\n";
+                            }
+                            else {
+                                riri.addToOrder(it, quantity);
+                            }
+                        }
+                    }
+                    catch (std::invalid_argument e) {
+                        std::cout << "";
+                    }
+                }
+            }
+            else if (tokenizedLine[1] == "show") {
                 riri.printOrder();
             }
+            else if (tokenizedLine[1] == "place") {
+                
+                
+            }
+            else if (tokenizedLine[1] == "clear") {
+                riri.clearOrder();
+                std::cout << "Cleared order.\n";
+            }
+            
         }
         else if (tokenizedLine[0] == "stock") {
             riri.printStock();
         }
         else if (tokenizedLine[0] == "menu") {
             riri.printMenu();
+        }
+        else if (tokenizedLine[0] == "save") {
+            std::ofstream file("restaurant.bin", std::ios::binary);
+            if (!file.is_open()) {
+                std::cout << "File didn't open correctly.\n";
+            }
+            else {
+                std::cout << "Saving...\n";
+                riri.serialize(file);
+                file.close();
+                std::cout << "Data saved.\n";
+            }
+        }
+        else if (tokenizedLine[0] == "help") {
+            std::cout << "\n---COMMANDS---\n";
+            std::cout << "leave - kills the program\n";
+            std::cout << "save - saves app data to the default save location\n";
+            std::cout << "order\n";
+            std::cout << "\tshow - prints the current order to the console\n";
+            std::cout << "\tadd <menu item name> <quantity> - adds the specified menu item to the order\n";
+            std::cout << "\tplace - places the order\n";
+            std::cout << "\tclear - empties the current order\n";
+            std::cout << "stock - prints the ingredients in the stock\n";
+            std::cout << "menu - prints the menu\n";
+            std::cout << "help - prints this message\n";
+        }
+        else {
+            std::cout << "Invalid command.\nUse \"help\" to print the help message.\n";
         }
     }
     

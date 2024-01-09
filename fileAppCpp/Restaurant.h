@@ -6,6 +6,7 @@
 #include <set>
 #include <utility>
 #include <fstream>
+#include <iterator>
 #include "globals.h"
 #include "ISerializable.h"
 #include "MenuItem.h"
@@ -25,6 +26,7 @@ public:
     void printOrder() const;
     void printStock() const;
     void reduceStock();
-    void addToOrder(class MenuItem item);
+    void addToOrder(class MenuItem item, int quantity);
+    class MenuItem findInMenu(std::string menuItemName);
     void clearOrder();
 };
