@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <queue>
 
 #include "globals.h"
 #include "CheckExtension.h"
@@ -136,6 +137,7 @@ public:
 
 int main(int argc, const char * argv[]) {
     Restaurant riri;
+    std::queue<std::string> queue;
     if (argc == 1) {
         std::cout << "No data files were specified. Using defaults.\n";
         std::ifstream file("restaurant.bin", std::ios::binary);
