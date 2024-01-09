@@ -29,4 +29,5 @@ public:
     void addToOrder(class MenuItem item, int quantity);
     class MenuItem findInMenu(std::string menuItemName);
     void clearOrder();
+    std::list<class Ingredient> copyStock() const;
 };

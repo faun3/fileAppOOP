@@ -29,3 +29,12 @@ bool CheckExtension::checkExtensionNoCsv(const std::string& filename) {
     }
     return false;
 }
+
+std::string CheckExtension::getExtension(const std::string& filename) {
+    size_t dotPosition = filename.find_last_of(".");
+    
+    if (dotPosition == std::string::npos) return "";
+    std::string extension = filename.substr(dotPosition + 1);
+    
+    return extension;
+}

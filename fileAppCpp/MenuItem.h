@@ -24,4 +24,5 @@ public:
     void setPrice(double newPrice);
     void setIngredients(std::vector<class Ingredient> newIngredients);
     bool operator<(const class MenuItem& rhs) const;
+    class Ingredient findIngredient(std::string ingredientName);
 };

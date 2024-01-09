@@ -100,10 +100,15 @@ void Restaurant::printMenu() const {
 
 void Restaurant::printOrder() const {
     std::cout << "\n---Order---\n";
+    double total = 0;
     if (order.size() > 0) {
         for (const auto& oi : this->order) {
-            std::cout << oi.second.first.getName() << " x " << oi.second.second << "\n";
+            double price = oi.second.first.getPrice() * oi.second.second;
+            total += price;
+            std::cout << oi.second.first.getName() << " x " << oi.second.second;
+            std::cout << " -- " << price << "\n";
         }
+        std::cout << "Total: " << total << "\n";
     }
     else std::cout << "Nothing yet.\n";
 }
@@ -137,4 +142,33 @@ void Restaurant::addToOrder(class MenuItem item, int quantity) {
     else {
         this->order[item.getName()].second += quantity;
     }
+}
+
+std::list<class Ingredient> Restaurant::copyStock() const {
+    std::list<class Ingredient> copy = this->stock;
+    return copy;
+}
+
+void Restaurant::reduceStock() {
+    std::list<class Ingredient> stockCopy = this->stock;
+    for (const auto& keyValue : this->order) {
+        class MenuItem mi = keyValue.second.first;
+        int qty = keyValue.second.second;
+        for (auto& ing : mi.getIngredients()) {
+            int menuItemQty = ing.getQuantity();
+            for (auto& stockIng : stockCopy) {
+                int inStockQty = stockIng.getQuantity();
+                if (stockIng.getName() == ing.getName()) {
+                    if (inStockQty >= (menuItemQty * qty)) {
+                        int newQty = inStockQty - (menuItemQty * qty);
+                        stockIng.setQuantity(newQty);
+                    }
+                    else {
+                        throw std::invalid_argument("Not enough stock to do that!");
+                    }
+                }
+            }
+        }
+    }
+    this->stock = stockCopy;
 }

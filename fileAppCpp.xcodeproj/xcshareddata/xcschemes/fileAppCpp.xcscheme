@@ -57,12 +57,12 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "menuItems.txt"
-            isEnabled = "NO">
+            argument = "stock.csv"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "stock.csv"
-            isEnabled = "NO">
+            argument = "menuItems.txt"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

@@ -106,3 +106,10 @@ bool MenuItem::operator<(const class MenuItem& rhs) const {
     return false;
 }
 
+class Ingredient MenuItem::findIngredient(std::string ingredientName) {
+    for (auto i : this->ingredients) {
+        if (i.getName() == ingredientName) return i;
+    }
+    class Ingredient t("", 0);
+    return t;
+}
