@@ -11,6 +11,7 @@
 #include "Ingredient.h"
 #include "MenuItem.h"
 #include "Restaurant.h"
+#include "Parser.h"
 
 // how to get files from the directory where the main.cpp file is (aka sane people mode)
     // Product > Scheme > Edit Scheme
@@ -134,16 +135,22 @@ public:
 
 
 int main(int argc, const char * argv[]) {
+    Restaurant riri;
     if (argc == 1) {
         std::cout << "No data files were specified. Using defaults.\n";
-        // std::ifstream ingredientsFile("ing.bin", std::ios::binary);
-        // std::ifstream menuItemFile("menuItem.bin", std::ios::binary);
+        std::ifstream file("restaurant.bin", std::ios::binary);
+
+        riri.deserialize(file);
         
-        std::vector<class Ingredient> stock;
+        file.close();
     }
     else {
         if (argc == 3) {
+            std::ifstream ingredientsFile(argv[1], std::ios::binary);
+            std::ifstream menuItemFile(argv[2], std::ios::binary);
             
+            ingredientsFile.close();
+            menuItemFile.close();
         }
         
         else {
@@ -162,9 +169,7 @@ int main(int argc, const char * argv[]) {
     // artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(0), 2));
     // and 1 juice
     // artificialOrder.push_back(std::pair<class MenuItem, int>(parsedVector.at(1), 1));
-    
-    Restaurant riri;
-    
+        
     enum mode {
         read,
         write
@@ -185,5 +190,28 @@ int main(int argc, const char * argv[]) {
     riri.printMenu();
     riri.printOrder();
     riri.printStock();
+    
+    bool running = true;
+    while (running) {
+        std::vector<std::string> tokenizedLine;
+        std::string line;
+        std::getline(std::cin, line);
+        tokenizedLine = Parser::splitCommand(line);
+        if (tokenizedLine[0] == "leave") {
+            running = false;
+        }
+        else if (tokenizedLine[0] == "order") {
+            if (tokenizedLine[1] == "show") {
+                riri.printOrder();
+            }
+        }
+        else if (tokenizedLine[0] == "stock") {
+            riri.printStock();
+        }
+        else if (tokenizedLine[0] == "menu") {
+            riri.printMenu();
+        }
+    }
+    
     return 0;
 }
