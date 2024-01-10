@@ -156,9 +156,11 @@ void Restaurant::reduceStock() {
         int qty = keyValue.second.second;
         for (auto& ing : mi.getIngredients()) {
             int menuItemQty = ing.getQuantity();
+            bool found = false;
             for (auto& stockIng : stockCopy) {
                 int inStockQty = stockIng.getQuantity();
                 if (stockIng.getName() == ing.getName()) {
+                    found = true;
                     if (inStockQty >= (menuItemQty * qty)) {
                         int newQty = inStockQty - (menuItemQty * qty);
                         stockIng.setQuantity(newQty);
@@ -168,7 +170,31 @@ void Restaurant::reduceStock() {
                     }
                 }
             }
+            if (!found) throw std::invalid_argument("Some ingredients are not in stock!");
         }
     }
     this->stock = stockCopy;
+}
+
+std::list<class Ingredient> Restaurant::getStock() const {
+    return this->stock;
+}
+
+void Restaurant::printStockDelta(std::list<class Ingredient> stockCopy, std::ofstream& logFile) const {
+    for (const auto& si : this->stock) {
+        for (const auto& sCpyItem : stockCopy) {
+            if (sCpyItem.getName() == si.getName() && sCpyItem.getQuantity() != si.getQuantity()) {
+                logFile << "delta " << si.getName() << " " << si.getQuantity() - sCpyItem.getQuantity() << "\n";
+            }
+        }
+    }
+}
+
+double Restaurant::getOrderPrice() const {
+    double total = 0;
+    for (const auto& oi : this->order) {
+        double price = oi.second.first.getPrice() * oi.second.second;
+        total += price;
+    }
+    return total;
 }

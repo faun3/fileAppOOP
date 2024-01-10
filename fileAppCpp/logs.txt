@@ -8,3 +8,30 @@
 [Wed Jan 10 11:05:02 2024] stock
 [Wed Jan 10 11:05:03 2024] stock
 [Wed Jan 10 11:05:07 2024] leave
+[Wed Jan 10 13:00:36 2024] order add Soda 3
+[Wed Jan 10 13:00:39 2024] order place
+[Wed Jan 10 13:00:40 2024] leave
+[Wed Jan 10 13:02:14 2024] order add Soda 4
+[Wed Jan 10 13:02:16 2024] order place
+[Wed Jan 10 13:02:18 2024] leave
+[Wed Jan 10 13:04:39 2024] order add "Hawaii" 3
+[Wed Jan 10 13:04:40 2024] order place
+[Wed Jan 10 13:05:07 2024] stock
+[Wed Jan 10 13:06:49 2024] leave
+[Wed Jan 10 13:07:16 2024] order
+[Wed Jan 10 13:07:22 2024] order add "Hawaii" 2
+[[Wed Jan 10 13:07:49 2024] order add Hawaii 2
+[Wed Jan 10 13:07:51 2024] order place
+[Wed Jan 10 13:07:54 2024] order
+[Wed Jan 10 13:07:56 2024] stock
+[Wed Jan 10 13:08:49 2024] leave
+[Wed Jan 10 13:48:37 2024] menu
+[Wed Jan 10 13:48:41 2024] order add Soda 1
+[Wed Jan 10 13:48:44 2024] order
+[Wed Jan 10 13:48:51 2024] order place
+[Wed Jan 10 13:48:56 2024] leave
+[Wed Jan 10 13:49:19 2024] order add Pizza 1
+[Wed Jan 10 13:49:21 2024] order add Soda 2
+[Wed Jan 10 13:49:31 2024] order place
+[Wed Jan 10 13:49:36 2024] order
+[Wed Jan 10 13:49:39 2024] leave

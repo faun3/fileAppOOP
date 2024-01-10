@@ -223,33 +223,25 @@ int main(int argc, const char * argv[]) {
             std::cout << "Invalid number of arguments specified.\n Please use 2 .txt or .bin files. The first file should contain information about the restaurant's stock, and the second file should contain information about the restaurant's menu.\nThe file containing ingredient data can also be a .csv.\nUsing default data.";
         }
     }
-    enum mode {
-        read,
-        write
-    };
-    
-    //mode mode = mode::write;
-    // DO
-    // NOT
-    // DELETE THIS
-//    if (mode == mode::read) {
-//        std::ifstream file("restaurant.bin", std::ios::binary);
-//        riri.deserialize(file);
-//        file.close();
-//    }
-//
-    
+
     riri.printMenu();
     riri.printOrder();
     riri.printStock();
     
+    std::list<class Ingredient> copyForDeltas = riri.copyStock();
     
+    double dailySales;
     
     bool running = true;
     while (running) {
         std::ofstream logFile("logs.txt", std::ios::app);
+        std::ofstream deltaLog("delta.txt");
+        std::ofstream salesLog("sales.txt", std::ios::app);
         if (!logFile.is_open()) {
             std::cout << "Log file could not open. Running without logs...\n";
+        }
+        if (!deltaLog.is_open()) {
+            std::cout << "Log file for stock deltas could not open. Running without delta logs...\n";
         }
         std::vector<std::string> tokenizedLine;
         std::string line;
@@ -263,6 +255,15 @@ int main(int argc, const char * argv[]) {
         }
         else if (tokenizedLine[0] == "leave") {
             logFile.close();
+            
+            riri.printStockDelta(copyForDeltas, deltaLog);
+            deltaLog.close();
+            
+            std::string sales = "Total volume: " + std::to_string(dailySales);
+            salesLog << Logger::appendTime(sales);
+            salesLog.close();
+            
+            
             std::cout << "\nbye\n";
             running = false;
         }
@@ -301,6 +302,7 @@ int main(int argc, const char * argv[]) {
             else if (tokenizedLine[1] == "place") {
                 try {
                     riri.reduceStock();
+                    dailySales += riri.getOrderPrice();
                     riri.clearOrder();
                     std::cout << "Order placed successfully.\n";
                 }

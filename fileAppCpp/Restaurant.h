@@ -25,9 +25,12 @@ public:
     void printMenu() const;
     void printOrder() const;
     void printStock() const;
+    std::list<class Ingredient> getStock() const;
+    void printStockDelta(std::list<class Ingredient> stockCopy, std::ofstream& logFile) const;
     void reduceStock();
     void addToOrder(class MenuItem item, int quantity);
     class MenuItem findInMenu(std::string menuItemName);
     void clearOrder();
     std::list<class Ingredient> copyStock() const;
+    double getOrderPrice() const;
 };
