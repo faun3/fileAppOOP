@@ -229,20 +229,19 @@ int main(int argc, const char * argv[]) {
     riri.printStock();
     
     std::list<class Ingredient> copyForDeltas = riri.copyStock();
+    double dailySales = 0;
     
-    double dailySales;
+    std::ofstream logFile("logs.txt", std::ios::app);
+    std::ofstream salesLog("sales.txt", std::ios::app);
+    if (!logFile.is_open()) {
+        std::cout << "Log file could not open. Running without logs...\n";
+    }
+    if (!salesLog.is_open()) {
+        std::cout << "Log file for sales could not open. Running without sales logs...\n";
+    }
     
     bool running = true;
     while (running) {
-        std::ofstream logFile("logs.txt", std::ios::app);
-        std::ofstream deltaLog("delta.txt");
-        std::ofstream salesLog("sales.txt", std::ios::app);
-        if (!logFile.is_open()) {
-            std::cout << "Log file could not open. Running without logs...\n";
-        }
-        if (!deltaLog.is_open()) {
-            std::cout << "Log file for stock deltas could not open. Running without delta logs...\n";
-        }
         std::vector<std::string> tokenizedLine;
         std::string line;
         std::getline(std::cin, line);
@@ -256,13 +255,11 @@ int main(int argc, const char * argv[]) {
         else if (tokenizedLine[0] == "leave") {
             logFile.close();
             
-            riri.printStockDelta(copyForDeltas, deltaLog);
-            deltaLog.close();
+            riri.printStockDelta(copyForDeltas, "stockDelta.txt");
             
             std::string sales = "Total volume: " + std::to_string(dailySales);
             salesLog << Logger::appendTime(sales);
             salesLog.close();
-            
             
             std::cout << "\nbye\n";
             running = false;

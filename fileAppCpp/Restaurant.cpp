@@ -180,14 +180,18 @@ std::list<class Ingredient> Restaurant::getStock() const {
     return this->stock;
 }
 
-void Restaurant::printStockDelta(std::list<class Ingredient> stockCopy, std::ofstream& logFile) const {
+void Restaurant::printStockDelta(std::list<class Ingredient> stockCopy, std::string filename) const {
+    std::ofstream file(filename);
+    if (!file.is_open()) return;
     for (const auto& si : this->stock) {
         for (const auto& sCpyItem : stockCopy) {
             if (sCpyItem.getName() == si.getName() && sCpyItem.getQuantity() != si.getQuantity()) {
-                logFile << "delta " << si.getName() << " " << si.getQuantity() - sCpyItem.getQuantity() << "\n";
+                file << "delta " << si.getName() << " " << si.getQuantity() - sCpyItem.getQuantity() << "\n";
+                std::cout  << "delta " << si.getName() << " " << si.getQuantity() - sCpyItem.getQuantity() << "\n";
             }
         }
     }
+    file.close();
 }
 
 double Restaurant::getOrderPrice() const {
