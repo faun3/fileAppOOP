@@ -1,0 +1,10 @@
+
+[Wed Jan 10 11:03:31 2024] order
+[Wed Jan 10 11:03:38 2024] order add Pizza 1
+[Wed Jan 10 11:03:46 2024] order add "Soda" 3
+[Wed Jan 10 11:03:49 2024] order place
+[Wed Jan 10 11:03:51 2024] stock
+[Wed Jan 10 11:03:54 2024] leave
+[Wed Jan 10 11:05:02 2024] stock
+[Wed Jan 10 11:05:03 2024] stock
+[Wed Jan 10 11:05:07 2024] leave

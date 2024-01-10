@@ -13,6 +13,7 @@
 #include "MenuItem.h"
 #include "Restaurant.h"
 #include "Parser.h"
+#include "Logger.h"
 
 // how to get files from the directory where the main.cpp file is (aka sane people mode)
     // Product > Scheme > Edit Scheme
@@ -138,6 +139,7 @@ public:
 int main(int argc, const char * argv[]) {
     Restaurant riri;
     std::queue<std::string> queue;
+    
     if (argc == 1) {
         std::cout << "No data files were specified. Using defaults.\n";
         std::ifstream file("restaurant.bin", std::ios::binary);
@@ -245,14 +247,22 @@ int main(int argc, const char * argv[]) {
     
     bool running = true;
     while (running) {
+        std::ofstream logFile("logs.txt", std::ios::app);
+        if (!logFile.is_open()) {
+            std::cout << "Log file could not open. Running without logs...\n";
+        }
         std::vector<std::string> tokenizedLine;
         std::string line;
         std::getline(std::cin, line);
+        if (line != "") {
+            logFile << Logger::appendTime(line);
+        }
         tokenizedLine = Parser::splitCommand(line);
         if (tokenizedLine.empty()) {
             std::cout << "Invalid command!\nUse \"help\" to print the help message.\n";
         }
         else if (tokenizedLine[0] == "leave") {
+            logFile.close();
             std::cout << "\nbye\n";
             running = false;
         }
@@ -339,6 +349,5 @@ int main(int argc, const char * argv[]) {
             std::cout << "Invalid command.\nUse \"help\" to print the help message.\n";
         }
     }
-    
     return 0;
 }
